@@ -10,7 +10,7 @@ comign soon!
 
 1. Get an entrance ticket to the bullgit pro™ (enterprise) lottery
 3. Get picked one of the members to make your pro(ject)
-5. Some extra constraints get added to the project by the (pro™) algorithm
+5. An extra constraint will get added to the project by the (pro™) algorithm
 20. your project will be made and shared!
 888. …
 1. Profit!
