@@ -20,11 +20,14 @@ function pick(constraints, members, client) {
 /**
  * get the members who joined the bullgit pro™ program
  * @param  {String} url the url where all of the members are defined (for example https://bullg.it/members.json)
- * @return {Array}      All of the members with {pro: true}
+ * @return {Promise(Array)}     All of the members with {pro: true}
  */
 function getMembers(url) {
-  const availableMembers = [];
-  return availableMembers;
+  return new Promise(resolve, reject) {
+    const availableMembers = [];
+
+    resolve(availableMembers);
+  }
 }
 
 // answer to requests
