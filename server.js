@@ -1,4 +1,4 @@
-const https = require('https');
+const request = require('request');
 const util = require('./util.js');
 const constraints = require('./constraints.json');
 
@@ -23,29 +23,30 @@ function pick(constraints, members, client) {
  * @return {Promise(Array)}     All of the members with {pro: true}
  */
 function getMembers(url) {
-  return new Promise(function (resolve, reject) {
-    const availableMembers = [];
+  return new Promise(function(resolve, reject) {
+    let availableMembers = [];
 
-    https.get(url, function (res, err) {
+    request({
+      url,
+      json: true
+    }, function(err, res, body) {
       if (err) {
         reject(err);
       }
 
-      console.log(res);
-      res.filter(member => {
+      availableMembers = body.gitches.filter(member => {
         return member.pro;
-      }).forEach(member => {
-        availableMembers.push(member);
       });
 
-      console.log(availableMembers);
       resolve(availableMembers);
     });
   });
 }
 
 getMembers('https://bullg.it/members.json').then(members => {
-  pick(constraints, members, 'client');
+  console.log(pick(constraints, members, 'client'));
+}).catch(err => {
+  console.error(err);
 });
 
 // answer to requests
