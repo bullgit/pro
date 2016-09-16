@@ -8,7 +8,7 @@ module.exports = {
     if (!array instanceof Array) {
       throw new Error('input was no array.', array);
     } else {
-      return array[Math.floor(Math.random() * array.length)]
+      return array[Math.floor(Math.random() * array.length)];
     }
   }
 };

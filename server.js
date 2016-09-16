@@ -14,7 +14,7 @@ function pick(constraints, members, client) {
     constraint: util.random(constraints),
     assignee: util.random(members),
     client: client
-  }
+  };
 }
 
 /**
@@ -23,12 +23,30 @@ function pick(constraints, members, client) {
  * @return {Promise(Array)}     All of the members with {pro: true}
  */
 function getMembers(url) {
-  return new Promise(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     const availableMembers = [];
 
-    resolve(availableMembers);
-  }
+    https.get(url, function (res, err) {
+      if (err) {
+        reject(err);
+      }
+
+      console.log(res);
+      res.filter(member => {
+        return member.pro;
+      }).forEach(member => {
+        availableMembers.push(member);
+      });
+
+      console.log(availableMembers);
+      resolve(availableMembers);
+    });
+  });
 }
+
+getMembers('https://bullg.it/members.json').then(members => {
+  pick(constraints, members, 'client');
+});
 
 // answer to requests
 // fetch bullgit members (https://bullg.it/members.json)
