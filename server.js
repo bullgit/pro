@@ -1,6 +1,7 @@
 const request = require('request');
 const util = require('./util.js');
 const constraints = require('./constraints.json');
+const dispatcher = require('httpdispatcher');
 
 /**
  * Assign a constraint to a member and a client
