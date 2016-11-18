@@ -1,57 +1,15 @@
-const request = require('request');
-const dispatcher = require('httpdispatcher');
+const HttpDispatcher = require('httpdispatcher');
 const http = require('http');
-const util = require('./util.js');
-const constraints = require('./constraints.json');
+const getMembers = require('./lib/getMembers.js');
+const pickConstraint = require('./lib/pickConstraint.js');
+
+const dispatcher = new HttpDispatcher();
 
 /**
- * Assign a constraint to a member and a client
- * @param  {Array} constraints All of the possible constraints
- * @param  {Array} members     All of the joining members
- * @param  {Object} client     The enquiring client
- * @return {Object}            The chosen constraint, assignee and client
+ * Serve the application on a certain port
+ * @param  {Number=8000} port the port to serve on
+ * @return {Promise}      Resolves when application starts
  */
-function pick(constraints, members, client) {
-  return {
-    constraint: util.random(constraints),
-    assignee: util.random(members),
-    client: client
-  };
-}
-
-/**
- * get the members who joined the bullgit pro™ program
- * @param  {String} url     The url where all of the members are defined (for example https://bullg.it/members.json)
- * @return {Promise(Array)} All of the members with {pro: true}
- */
-function getMembers(url) {
-  return new Promise(function(resolve, reject) {
-    let availableMembers = [];
-
-    request({
-      url,
-      json: true
-    }, function(err, res, body) {
-      if (err) {
-        reject(err);
-      }
-
-      availableMembers = body.gitches.filter(member => {
-        return member.pro;
-      });
-
-      resolve(availableMembers);
-    });
-  });
-}
-
-getMembers('https://bullg.it/members.json').then(members => {
-  // console.log(pick(constraints, members, 'client'));
-}).catch(err => {
-  console.error(err);
-});
-
-
 function serve(port) {
   console.log('serving');
   return new Promise((resolve, reject) => {
@@ -73,9 +31,24 @@ function serve(port) {
 
     dispatcher.onPost('/request', function(req, res) {
       res.writeHead(200, {
-        'Content-Type': 'text/html'
+        'Content-Type': 'text/html; charset=utf-8'
       });
-      res.end(`Got Post Data: ${JSON.stringify(req.params)}`);
+      const request = req.params;
+      getMembers('https://bullg.it/members.json').then(members => {
+        const constraint = pickConstraint(members, 'client');
+        res.end(`
+<meta charset="UTF-8">
+<h1>Nice!</h1>
+<p>Our trained professional <em><a href="${constraint.assignee.url}">${constraint.assignee.name}</a></em> will now start working on: </p>
+<p><strong>${request.title}</strong></p>
+<p>With comment: </p>
+<blockquote>
+  ${request.message}
+</blockquote>
+<p>All while taking in account to <em>${constraint.constraint}</em></p>`);
+      }).catch(err => {
+        res.end(err);
+      });
     });
 
     // serve the index
@@ -93,7 +66,7 @@ function serve(port) {
 
     dispatcher.onGet('/', (req, res) => {
       res.writeHead(200, {
-        'Content-Type': 'text/html'
+        'Content-Type': 'text/html; charset=utf-8'
       });
       res.end(`
 <form action="/request" method="post">
