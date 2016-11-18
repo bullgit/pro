@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/bullgit/pro#readme",
   "dependencies": {
-    "httpdispatcher": "^1.0.0",
-    "request": "^2.74.0"
+    "got": "^6.6.3",
+    "httpdispatcher": "^1.0.0"
   }
 }
