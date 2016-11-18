@@ -3,8 +3,38 @@ html(lang='en')
   head
     meta(charset='UTF-8')
     title bullgit pro™
+    style.
+      .red {
+        color: red;
+      }
   body
-    form(action='/request', method='post')
-      input#title(type='text', name='title', placeholder='title')
-      textarea#message(name='message', placeholder='message')
-      input(type='submit')
+    h1 bullgit pro™
+    p Good day business acquaintance,
+    p
+      | Welcome to the enormously nice spot of&nbsp;
+      a(href='https://bullg.it') bullgit
+      |  pro. We're a bunch of really nice people making things on the web and all around it.
+    p
+      | We're dedicated to allowing everyone needed to have their own nice ideas made, so this is our way of giving back.
+    form#request(action='/request', method='post')
+      div
+        label(for='title') Request
+          strong.red(aria-hidden='true') *
+        input#title(type='text', name='title', placeholder='title', required='required', aria-required='true')
+      div
+        label(for='message') Details
+          strong.red(aria-hidden='true') *
+        textarea#message(name='message', placeholder='message', required='required', aria-required='true')
+      div
+        label(for='email') email
+          strong.red(aria-hidden='true') *
+        input#email(type='email', name='email', placeholder='someone@email.com', required='', aria-required='true')
+      div
+        input(type='submit')
+  script.
+    request.addEventListener('submit', function(event) {
+      if (!event.target.checkValidity()) {
+        event.preventDefault();
+        alert('Dear business acquaintance,\n\nYou might have forgot to enter a field.\n\nHave a nice day!');
+      }
+    }, false);
