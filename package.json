@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
+  "license": "vvl",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bullgit/pro.git"
@@ -24,6 +25,7 @@
   "homepage": "https://github.com/bullgit/pro#readme",
   "dependencies": {
     "got": "^6.6.3",
-    "httpdispatcher": "^1.0.0"
+    "httpdispatcher": "^1.0.0",
+    "pug": "^2.0.0-beta6"
   }
 }

@@ -1,5 +1,7 @@
-const HttpDispatcher = require('httpdispatcher');
 const http = require('http');
+const path = require('path');
+const HttpDispatcher = require('httpdispatcher');
+const pug = require('pug');
 const getMembers = require('./lib/getMembers.js');
 const pickConstraint = require('./lib/pickConstraint.js');
 
@@ -35,45 +37,24 @@ function serve(port) {
       });
       const request = req.params;
       getMembers('https://bullg.it/members.json').then(members => {
-        const constraint = pickConstraint(members, 'client');
-        res.end(`
-<meta charset="UTF-8">
-<h1>Nice!</h1>
-<p>Our trained professional <em><a href="${constraint.assignee.url}">${constraint.assignee.name}</a></em> will now start working on: </p>
-<p><strong>${request.title}</strong></p>
-<p>With comment: </p>
-<blockquote>
-  ${request.message}
-</blockquote>
-<p>All while taking in account to <em>${constraint.constraint}</em></p>`);
+        const picked = pickConstraint(members, 'client');
+        res.end(pug.renderFile(path.join(__dirname, '/src/response.pug'), {
+          constraint: picked.constraint,
+          assignee: picked.assignee,
+          title: req.params.title,
+          message: req.params.message
+        }));
       }).catch(err => {
         res.end(err);
       });
     });
 
     // serve the index
-    // dispatcher.onGet('/', (req, res) => {
-    //   const options = {};
-    //   const data = {
-    //     title,
-    //     source
-    //   };
-    //   res.end(pug.renderFile(path.join(__dirname, '/../lib/index.pug'), {
-    //     options,
-    //     data
-    //   }));
-    // });
-
     dispatcher.onGet('/', (req, res) => {
       res.writeHead(200, {
         'Content-Type': 'text/html; charset=utf-8'
       });
-      res.end(`
-<form action="/request" method="post">
-  <input type="text" id="title" name="title" placeholder="title">
-  <textarea name="message" id="message" placeholder="message"></textarea>
-  <input type="submit">
-</form>`);
+      res.end(pug.renderFile(path.join(__dirname, '/src/index.pug'), {}));
     });
 
     // create a server
