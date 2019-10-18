@@ -1,6 +1,6 @@
 {
   "name": "pro",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Client and server for the bullgit pro™ project\"",
   "main": "server.js",
   "scripts": {
@@ -25,7 +25,7 @@
   "homepage": "https://github.com/bullgit/pro#readme",
   "dependencies": {
     "got": "^6.6.3",
-    "httpdispatcher": "^1.0.0",
-    "pug": "^2.0.0-beta6"
+    "httpdispatcher": "2",
+    "pug": "^2.0.4"
   }
 }
