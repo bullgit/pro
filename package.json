@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/bullgit/pro#readme",
   "dependencies": {
-    "got": "^6.6.3",
+    "got": "^11.8.5",
     "httpdispatcher": "2",
     "pug": "^2.0.4"
   }
